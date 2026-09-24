@@ -132,14 +132,16 @@
   }
   .daycard::after{content:""; position:absolute; left:0; right:0; top:0; height:4px; background:var(--brass);}
   .daycard.quiz::after{background:var(--oxblood);}
-  .daycard .icon{font-size:1.6rem;}
+  .daycard .icon{font-size:1.6rem; min-height:44px; display:flex; align-items:center;}
+  .daycard .icon img{display:block; height:44px; width:auto; max-width:100%;}
   .daycard .day{font-family:'Fraunces',serif; font-weight:700; font-size:1.05rem; margin-top:8px;}
   .daycard .mode{font-size:.72rem; color:var(--brass-ink); font-weight:700; margin:2px 0 8px;}
   .daycard .chap{font-size:.85rem; color:var(--ink-soft);}
 
   .projects{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-top:14px;}
   .project{background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px;}
-  .project .icon{font-size:1.3rem;}
+  .project .icon{font-size:1.3rem; min-height:44px; display:flex; align-items:center;}
+  .project .icon img{display:block; height:44px; width:auto; max-width:100%;}
   .project h3{font-size:.95rem; margin:6px 0 4px;}
   .project p{font-size:.82rem; color:var(--ink-soft); margin:0;}
 
@@ -519,19 +521,36 @@ const WEEK_BANNER_ALT = {
   3:'A wooden rowing boat on a calm Norwegian fjord at sunset',
   4:'An open tuck-box full of sweets on a quay, with a paddle-steamer crossing the water behind',
   5:'A vintage open-top motor-car driving down an autumn country lane',
-  6:'An empty old classroom with wooden desks and inkwells in golden afternoon light'
+  6:'An empty old classroom with wooden desks and inkwells in golden afternoon light',
+  7:'A pipe resting on sunny seaside rocks beside a small pile of goat droppings, with a curious goat, a fjord and a red wooden house behind',
+  8:'An open grey box of twelve numbered, wrapped chocolate bars on a desk beside old books, with a school building through the window',
+  9:'A vintage motorbike with goggles on the handlebars parked by an old school gate at sunset among autumn leaves',
+  10:'A school hall with student artwork on the wall, easels, flowers and colourful bunting in golden light'
 };
 function weekBannerHTML(n){
   if(typeof IMG_WEEKS==='undefined' || !IMG_WEEKS[n]) return '';
   return `<div class="week-banner"><img src="${IMG_WEEKS[n]}" alt="${WEEK_BANNER_ALT[n]||''}"></div>`;
 }
 
+/* Weekly project icons: Poster / Comic strip / Drama scene use artwork from images.js; other projects keep their emoji. */
+function projectIconHTML(p){
+  const art = {
+    'Poster': typeof IMG_ICON_POSTER!=='undefined' ? IMG_ICON_POSTER : null,
+    'Comic strip': typeof IMG_ICON_COMIC!=='undefined' ? IMG_ICON_COMIC : null,
+    'Drama scene': typeof IMG_ICON_DRAMA!=='undefined' ? IMG_ICON_DRAMA : null
+  }[p.title];
+  return art ? `<img src="${art}" alt="">` : p.icon;
+}
+
 function renderWeekHub(){
   if(curWeek===10) return renderWeek10Hub();
   const cards = CW().days.map(d=>{
     const modeLabel = d.mode==='teacher' ? 'Teacher read' : d.mode==='group' ? 'Group read' : 'Quiz day';
+    const dayIcon = (d.mode==='teacher' && typeof IMG_ICON_TEACHER!=='undefined') ? `<img src="${IMG_ICON_TEACHER}" alt="">`
+                  : (d.mode==='group' && typeof IMG_ICON_GROUP!=='undefined') ? `<img src="${IMG_ICON_GROUP}" alt="">`
+                  : (d.mode==='quiz' && typeof IMG_ICON_QUIZ!=='undefined') ? `<img src="${IMG_ICON_QUIZ}" alt="">` : d.icon;
     return `<div class="daycard ${d.mode==='quiz'?'quiz':''}" onclick="nav('day','${d.key}')" tabindex="0" role="button">
-      <div class="icon">${d.icon}</div>
+      <div class="icon">${dayIcon}</div>
       <div class="day">${d.label}</div>
       <div class="mode">${modeLabel}</div>
       <div class="chap">${d.chapter}</div>
@@ -539,7 +558,7 @@ function renderWeekHub(){
   }).join('');
 
   const projects = CW().projects.map(p=>`
-    <div class="project"><div class="icon">${p.icon}</div><h3>${p.title}</h3><p>${p.text}</p></div>
+    <div class="project"><div class="icon">${projectIconHTML(p)}</div><h3>${p.title}</h3><p>${p.text}</p></div>
   `).join('');
 
   return `
@@ -872,6 +891,7 @@ function renderWeek10Hub(){
   const options = w.options.map(p=>`<div class="project"><div class="icon">${p.icon}</div><h3>${p.title}</h3><p>${p.text}</p></div>`).join('');
   return `
   ${topnav(`Home / <button onclick="nav('landing')">Week 10</button>`)}
+  ${weekBannerHTML(10)}
   <div class="wrap section">
     <div class="section-head"><div class="kicker">WEEK 10</div><h2>${WEEK_THEMES[curWeek-1]}</h2></div>
     <div class="li-box">
