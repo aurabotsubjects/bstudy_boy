@@ -83,6 +83,10 @@
   .hero-copy .sub{font-family:'Fraunces',serif; font-style:italic; color:var(--brass-ink); font-size:1.05rem; margin-top:6px;}
   .hero-copy p{max-width:560px; margin:14px auto 0; color:var(--ink-soft);}
 
+  /* ---- Week banner (Week hub) ---- */
+  .week-banner{margin:0; border-bottom:3px solid var(--brass); background:var(--navy); line-height:0;}
+  .week-banner img{display:block; width:100%; aspect-ratio:2/1; max-height:min(48vw,400px); object-fit:cover; object-position:center 55%;}
+
   .btn{
     display:inline-flex; align-items:center; gap:8px; border:none; cursor:pointer;
     background:var(--oxblood); color:#FBF4E3; font-weight:700; font-size:.95rem;
@@ -175,7 +179,7 @@
   .print-lines{border-bottom:1px solid var(--ink-soft); height:34px; margin-top:6px;}
   .print-only-btn{margin-bottom:14px;}
   @media print{
-    .topnav,.hero,.section-head,.toggle,.print-only-btn,.progress{display:none !important;}
+    .topnav,.hero,.week-banner,.section-head,.toggle,.print-only-btn,.progress{display:none !important;}
     body{background:#fff; color:#000;}
     .worksheet{border:none; padding:0;}
   }
@@ -234,7 +238,7 @@
   .nav-actions button{background:none; border:1px solid rgba(242,231,208,.4); color:inherit; font:inherit; font-size:.78rem; border-radius:20px; padding:5px 12px; cursor:pointer;}
 
   @media print{
-    .topnav,.hero,.section-head,.toggle,.print-only-btn,.progress,.no-print,.back-row{display:none !important;}
+    .topnav,.hero,.week-banner,.section-head,.toggle,.print-only-btn,.progress,.no-print,.back-row{display:none !important;}
     body{background:#fff; color:#000;}
     body::before{display:none !important;}
     .worksheet{border:none; padding:0;}
@@ -508,6 +512,20 @@ function renderLanding(){
 }
 
 /* ============ WEEK 1 HUB ============ */
+/* Week banner artwork (IMG_WEEKS lives in images.js; weeks without artwork simply show no banner). */
+const WEEK_BANNER_ALT = {
+  1:'An old-fashioned sweet-shop window filled with glass jars of colourful boiled sweets',
+  2:'A tiny grey mouse peeking out from behind a giant glass sweet jar',
+  3:'A wooden rowing boat on a calm Norwegian fjord at sunset',
+  4:'An open tuck-box full of sweets on a quay, with a paddle-steamer crossing the water behind',
+  5:'A vintage open-top motor-car driving down an autumn country lane',
+  6:'An empty old classroom with wooden desks and inkwells in golden afternoon light'
+};
+function weekBannerHTML(n){
+  if(typeof IMG_WEEKS==='undefined' || !IMG_WEEKS[n]) return '';
+  return `<div class="week-banner"><img src="${IMG_WEEKS[n]}" alt="${WEEK_BANNER_ALT[n]||''}"></div>`;
+}
+
 function renderWeekHub(){
   if(curWeek===10) return renderWeek10Hub();
   const cards = CW().days.map(d=>{
@@ -526,6 +544,7 @@ function renderWeekHub(){
 
   return `
   ${topnav(`Home / <button onclick="nav('landing')">Week ${curWeek}</button>`)}
+  ${weekBannerHTML(curWeek)}
   <div class="wrap section">
     <div class="section-head"><div class="kicker">WEEK ${curWeek}</div><h2>${WEEK_THEMES[curWeek-1]}</h2></div>
     <div class="li-box">
