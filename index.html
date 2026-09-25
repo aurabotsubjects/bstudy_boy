@@ -10,6 +10,7 @@
   document.getElementById('app-favicon').href = IMG_FAVICON;
   document.documentElement.style.setProperty('--hero-img', 'url("' + IMG_HERO + '")');
   document.documentElement.style.setProperty('--bg-pattern', 'url("' + IMG_BG_PATTERN + '")');
+  if(typeof IMG_BG_TUCKBOX!=='undefined') document.documentElement.style.setProperty('--tuckbox-bg', 'url("' + IMG_BG_TUCKBOX + '")');
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -138,8 +139,11 @@
   .daycard .mode{font-size:.72rem; color:var(--brass-ink); font-weight:700; margin:2px 0 8px;}
   .daycard .chap{font-size:.85rem; color:var(--ink-soft);}
 
-  .projects{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-top:14px;}
+  .projects{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-top:14px; padding:14px; border-radius:var(--radius); background-image:var(--tuckbox-bg); background-size:cover; background-position:center;}
   .project{background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px;}
+  .badge-row{display:flex; align-items:center; justify-content:center; gap:18px; flex-wrap:wrap; margin:18px 0;}
+  .badge-row img{width:110px; height:110px; border-radius:50%;}
+  .badge-row .badge-text{font-family:'Fraunces',serif; color:var(--ink); max-width:260px;}
   .project .icon{font-size:1.3rem; min-height:44px; display:flex; align-items:center;}
   .project .icon img{display:block; height:44px; width:auto; max-width:100%;}
   .btn-icon{height:1.1em; width:auto; vertical-align:-0.18em; margin-right:5px;}
@@ -764,7 +768,11 @@ function renderQuiz(day){
       <div class="model" id="model${i}">${q.model}</div></div>`;
   }).join('');
 
-  const scoreBanner = quizSubmitted ? `<div class="score-banner">Score: ${window._quizScore} / ${CQ().filter(q=>q.type==='mc').length} auto-marked questions</div>` : '';
+  const mcTotal = CQ().filter(q=>q.type==='mc').length;
+  const earnedBadge = quizSubmitted && typeof IMG_BADGE_QUIZ_CHAMPION!=='undefined' && mcTotal>0 && (window._quizScore/mcTotal)>=0.8
+    ? `<div class="badge-row"><img src="${IMG_BADGE_QUIZ_CHAMPION}" alt="Quiz champion badge"><span class="badge-text">Quiz champion! ${window._quizScore}/${mcTotal} — great reading this week.</span></div>`
+    : '';
+  const scoreBanner = quizSubmitted ? `<div class="score-banner">Score: ${window._quizScore} / ${mcTotal} auto-marked questions</div>${earnedBadge}` : '';
 
   return `
   ${topnav(`Home / <button onclick="nav('weekhub')">Week ${curWeek}</button> / ${day.label}`)}
@@ -893,7 +901,7 @@ function renderWeek10Hub(){
   const w = WEEK10;
   const lessonCards = w.lessons.map(l=>`
     <div class="daycard" onclick="nav('day','${l.key}')" tabindex="0" role="button">
-      <div class="icon">${l.icon}</div>
+      <div class="icon">${(l.key==='l3' && typeof IMG_ICON_PRESENTATION!=='undefined') ? `<img src="${IMG_ICON_PRESENTATION}" alt="">` : l.icon}</div>
       <div class="day">${l.label}</div>
       <div class="mode">${l.title}</div>
       <div class="chap">${l.blurb}</div>
@@ -979,8 +987,12 @@ function renderWeek10L2(l){
   </div>`;
 }
 function renderWeek10L3(l){
+  const finalProjectBanner = (typeof IMG_BANNER_FINAL_PROJECT!=='undefined')
+    ? `<div class="week-banner"><img src="${IMG_BANNER_FINAL_PROJECT}" alt="A festive stage and gallery wall of student artwork, ready for presentations and celebration"></div>`
+    : '';
   return `
   ${topnav(`Home / <button onclick="nav('weekhub')">Week 10</button> / ${l.label}`)}
+  ${finalProjectBanner}
   <div class="wrap section">
     <div class="section-head"><div class="kicker">${l.label.toUpperCase()} · ${l.title.toUpperCase()}</div><h2>Presentations &amp; celebration</h2></div>
     <p style="color:var(--ink-soft);max-width:640px;">${l.blurb}</p>
@@ -1004,8 +1016,12 @@ function certificateHTML(){
   const borderStyle = (typeof IMG_CERT_BORDER!=='undefined')
     ? ` style="background-image:url('${IMG_CERT_BORDER}'); background-size:100% 100%; background-repeat:no-repeat;"`
     : '';
+  const braveReaderBadge = (typeof IMG_BADGE_BRAVE_READER!=='undefined')
+    ? `<img src="${IMG_BADGE_BRAVE_READER}" alt="Brave Reader badge" style="width:96px;height:96px;border-radius:50%;margin:0 auto 6px;display:block;">`
+    : '';
   return `<div class="certificate"${borderStyle}>
     <div class="cert-kicker">Boy: Tales of Childhood — Book Study</div>
+    ${braveReaderBadge}
     <h2 class="cert-title">Certificate of Completion</h2>
     <p class="cert-line">This certifies that</p>
     <div class="cert-name">&nbsp;</div>
