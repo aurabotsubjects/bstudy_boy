@@ -142,6 +142,9 @@
   .project{background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px;}
   .project .icon{font-size:1.3rem; min-height:44px; display:flex; align-items:center;}
   .project .icon img{display:block; height:44px; width:auto; max-width:100%;}
+  .btn-icon{height:1.1em; width:auto; vertical-align:-0.18em; margin-right:5px;}
+  .slide h2 img.inline-icon{height:1.25em; width:auto; vertical-align:-0.22em; margin-right:10px;}
+  .worksheet h3 img.inline-icon{height:1.1em; width:auto; vertical-align:-0.2em; margin-right:7px;}
   .project h3{font-size:.95rem; margin:6px 0 4px;}
   .project p{font-size:.82rem; color:var(--ink-soft); margin:0;}
 
@@ -290,14 +293,14 @@
   }
 
   /* ---- Completion certificate ---- */
-  .certificate{border:6px double var(--brass); border-radius:10px; padding:56px 40px; text-align:center; background:var(--paper); max-width:680px; margin:26px auto;}
-  .cert-kicker{letter-spacing:.1em; text-transform:uppercase; font-size:.72rem; color:var(--brass-ink); font-weight:700;}
-  .cert-title{font-family:'Fraunces',serif; font-size:1.9rem; color:var(--oxblood); margin:12px 0 22px;}
-  .cert-line{color:var(--ink-soft); max-width:520px; margin:10px auto;}
-  .cert-name{font-family:'Fraunces',serif; font-style:italic; font-size:1.3rem; margin:24px auto; border-bottom:1px solid var(--line); padding-bottom:10px; max-width:440px; min-height:1.6em;}
-  .cert-row{display:flex; justify-content:center; gap:34px; flex-wrap:wrap; margin-top:30px; font-size:.85rem; color:var(--ink-soft);}
-  .wb-cert .certificate{background:#fff; margin:0; max-width:none;}
-  @media print{ .certificate{border-color:#A97B24;} }
+  .certificate{border-radius:10px; padding:118px 78px 96px; text-align:center; background:#fff; max-width:680px; margin:26px auto;}
+  .cert-kicker{letter-spacing:.1em; text-transform:uppercase; font-size:.72rem; color:#7A5A19; font-weight:700;}
+  .cert-title{font-family:'Fraunces',serif; font-size:1.9rem; color:#8A3030; margin:6px 0 20px;}
+  .cert-line{color:#5B4E3D; max-width:460px; margin:8px auto;}
+  .cert-name{font-family:'Fraunces',serif; font-style:italic; font-size:1.3rem; color:#2B2117; margin:20px auto; border-bottom:1px solid #D9C79E; padding-bottom:8px; max-width:400px; min-height:1.6em;}
+  .cert-row{display:flex; justify-content:center; gap:34px; flex-wrap:wrap; margin-top:22px; font-size:.85rem; color:#5B4E3D;}
+  .wb-cert .certificate{margin:0; max-width:none;}
+  @media print{ .certificate{-webkit-print-color-adjust:exact; print-color-adjust:exact;} }
 </style>
 <style id="pageRules"></style>
 </head>
@@ -506,7 +509,7 @@ function renderLanding(){
       <h2>Ten weeks, one memoir</h2>
     </div>
     <div class="shelf">${shelf}</div>
-    <div class="lp-actions"><button class="btn ghost small" onclick="nav('readingplan')">🖨️ Print term reading schedule</button></div>
+    <div class="lp-actions"><button class="btn ghost small" onclick="nav('readingplan')">${PRINT_ICON_HTML} Print term reading schedule</button></div>
     <p style="font-size:.85rem;color:var(--ink-soft);margin-top:4px;">Weeks 1–9 are ready to use; Week 10 (final project &amp; celebration) is next on the build list.</p>
   </div>
   <footer>Built from the Boy Book Study unit plan · Years 5–6 · NZ Curriculum English</footer>
@@ -532,12 +535,19 @@ function weekBannerHTML(n){
   return `<div class="week-banner"><img src="${IMG_WEEKS[n]}" alt="${WEEK_BANNER_ALT[n]||''}"></div>`;
 }
 
-/* Weekly project icons: Poster / Comic strip / Drama scene use artwork from images.js; other projects keep their emoji. */
+/* Shared inline icon for every print button (unit plan Section 8C, prompt 21). Falls back to the emoji if images.js hasn't loaded. */
+const PRINT_ICON_HTML = (typeof IMG_ICON_PRINT!=='undefined') ? `<img src="${IMG_ICON_PRINT}" alt="" class="btn-icon">` : '🖨️';
+/* Lead-in and go-away icons (prompts 22–23), used next to those headings in the on-screen slideshow and group worksheet. */
+const LEADIN_ICON_HTML = (typeof IMG_ICON_LEADIN!=='undefined') ? `<img src="${IMG_ICON_LEADIN}" alt="" class="inline-icon">` : '💡';
+const GOAWAY_ICON_HTML = (typeof IMG_ICON_GOAWAY!=='undefined') ? `<img src="${IMG_ICON_GOAWAY}" alt="" class="inline-icon">` : '👣';
+
+/* Weekly project icons: Poster / Comic strip / Drama scene / Journal reflection use artwork from images.js; other projects keep their emoji. */
 function projectIconHTML(p){
   const art = {
     'Poster': typeof IMG_ICON_POSTER!=='undefined' ? IMG_ICON_POSTER : null,
     'Comic strip': typeof IMG_ICON_COMIC!=='undefined' ? IMG_ICON_COMIC : null,
-    'Drama scene': typeof IMG_ICON_DRAMA!=='undefined' ? IMG_ICON_DRAMA : null
+    'Drama scene': typeof IMG_ICON_DRAMA!=='undefined' ? IMG_ICON_DRAMA : null,
+    'Journal reflection': typeof IMG_ICON_JOURNAL!=='undefined' ? IMG_ICON_JOURNAL : null
   }[p.title];
   return art ? `<img src="${art}" alt="">` : p.icon;
 }
@@ -571,7 +581,7 @@ function renderWeekHub(){
       <div class="lbl" style="margin-top:10px;">SUCCESS CRITERIA</div><p>${CW().sc}</p>
     </div>
     <div class="lp-actions">
-      <button class="btn small" onclick="nav('weekpack')">🖨️ Print week pack (all lesson plans + worksheets + quiz)</button>
+      <button class="btn small" onclick="nav('weekpack')">${PRINT_ICON_HTML} Print week pack (all lesson plans + worksheets + quiz)</button>
     </div>
     <div class="daygrid">${cards}</div>
 
@@ -626,10 +636,10 @@ function lessonPlanHTML(day){
 function buildSlides(day){
   return [
     {kicker:'Now reading', body:`<h2>${day.chapter}</h2><div class="range">📖 ${day.range?day.range+' · ':''}mark the page numbers from your class set</div>`},
-    {kicker:'Lead-in', body:`<h2>Before we start…</h2><ul>${day.leadIn.map(q=>`<li>${q}</li>`).join('')}</ul>`},
+    {kicker:'Lead-in', body:`<h2>${LEADIN_ICON_HTML}Before we start…</h2><ul>${day.leadIn.map(q=>`<li>${q}</li>`).join('')}</ul>`},
     {kicker:'Reading time', body:`<h2>${day.chapter}</h2><p>Read aloud now. ⏱️ Roughly 15–20 minutes.</p>`},
     {kicker:'Comprehension & inference', body:`<h2>Let's talk about it</h2><ul>${day.comp.map(q=>`<li>${q}</li>`).join('')}</ul>`},
-    {kicker:'Go-away prompt', body:`<h2>Take it with you</h2><p>${day.goAway}</p><p style="font-size:.85rem;">Record your answer in your reading journal.</p>`}
+    {kicker:'Go-away prompt', body:`<h2>${GOAWAY_ICON_HTML}Take it with you</h2><p>${day.goAway}</p><p style="font-size:.85rem;">Record your answer in your reading journal.</p>`}
   ];
 }
 function renderTeacherSlides(day){
@@ -640,7 +650,7 @@ function renderTeacherSlides(day){
   ${topnav(`Home / <button onclick="nav('weekhub')">Week ${curWeek}</button> / ${day.label}`)}
   <div class="wrap section">
     <div class="section-head"><div class="kicker">${day.label.toUpperCase()} · TEACHER READ</div><h2>${day.chapter}</h2></div>
-    <div class="lp-actions no-print"><button class="btn ghost small" onclick="nav('lessonplan','${day.key}')">🖨️ Print NZC lesson plan</button></div>
+    <div class="lp-actions no-print"><button class="btn ghost small" onclick="nav('lessonplan','${day.key}')">${PRINT_ICON_HTML} Print NZC lesson plan</button></div>
     <div class="stage">
       <div class="slide"><div class="kicker">${s.kicker}</div>${s.body}</div>
       <div class="stage-bar"><span>Slide ${slideIdx+1} of ${slides.length}</span><div class="dots">${dots}</div></div>
@@ -687,15 +697,15 @@ function buildWorksheetPrintable(day){
 }
 function renderGroupWorksheet(day){
   const saved = loadAnswers(day);
-  const printBtn = `<button class="btn ghost small print-only-btn" onclick="window.print()">🖨️ Print this worksheet</button>`;
+  const printBtn = `<button class="btn ghost small print-only-btn" onclick="window.print()">${PRINT_ICON_HTML} Print this worksheet</button>`;
 
   const onscreen = `
     <div class="worksheet">
-      <h3>Lead-in — discuss as a group</h3>
+      <h3>${LEADIN_ICON_HTML}Lead-in — discuss as a group</h3>
       ${day.leadIn.map(q=>`<p>${q}</p>`).join('')}
       <h3>Comprehension &amp; inference</h3>
       ${day.comp.map((q,i)=>`<div class="q"><label>${i+1}. ${q}</label><textarea id="comp${i}" rows="3" oninput="saveAnswers(CW().days.find(d=>d.key==='${day.key}'))">${saved.comp[i]||''}</textarea></div>`).join('')}
-      <h3>Go-away reflection</h3>
+      <h3>${GOAWAY_ICON_HTML}Go-away reflection</h3>
       <div class="q"><label>${day.goAway}</label><textarea id="goaway" rows="3" oninput="saveAnswers(CW().days.find(d=>d.key==='${day.key}'))">${saved.go||''}</textarea></div>
       <div class="save-note" id="saveNote">Answers save automatically to this device.</div>
     </div>`;
@@ -706,7 +716,7 @@ function renderGroupWorksheet(day){
   ${topnav(`Home / <button onclick="nav('weekhub')">Week ${curWeek}</button> / ${day.label}`)}
   <div class="wrap section">
     <div class="section-head"><div class="kicker">${day.label.toUpperCase()} · GROUP READ</div><h2>${day.chapter}</h2></div>
-    <div class="lp-actions no-print"><button class="btn ghost small" onclick="nav('lessonplan','${day.key}')">🖨️ Print NZC lesson plan</button></div>
+    <div class="lp-actions no-print"><button class="btn ghost small" onclick="nav('lessonplan','${day.key}')">${PRINT_ICON_HTML} Print NZC lesson plan</button></div>
     <div class="toggle">
       <button class="${sheetMode==='onscreen'?'on':''}" onclick="sheetMode='onscreen';render()">On-screen</button>
       <button class="${sheetMode==='printable'?'on':''}" onclick="sheetMode='printable';render()">Printable PDF</button>
@@ -733,7 +743,7 @@ function renderQuizPrintPage(withAnswers){
   ${topnav(`Home / <button onclick="nav('weekhub')">Week ${curWeek}</button> / Friday Quiz Print`)}
   <div class="wrap section">
     <div class="section-head"><div class="kicker">PRINTABLE</div><h2>Week ${curWeek} Quiz — ${withAnswers?'Answer Key':'Student Copy'}</h2></div>
-    <button class="btn ghost small print-only-btn" onclick="window.print()">🖨️ Print this</button>
+    <button class="btn ghost small print-only-btn" onclick="window.print()">${PRINT_ICON_HTML} Print this</button>
     ${buildQuizPrintable(withAnswers)}
     <div class="back-row no-print"><button class="btn ghost" onclick="nav('day','fri')">← Back to Quiz</button></div>
   </div>
@@ -761,9 +771,9 @@ function renderQuiz(day){
   <div class="wrap section">
     <div class="section-head"><div class="kicker">FRIDAY · QUIZ DAY</div><h2>Week ${curWeek} Quiz — 20 questions</h2></div>
     <div class="lp-actions no-print">
-      <button class="btn ghost small" onclick="nav('lessonplan','${day.key}')">🖨️ Print NZC lesson plan</button>
-      <button class="btn ghost small" onclick="nav('quizprint','fri')">🖨️ Print student copy</button>
-      <button class="btn ghost small" onclick="nav('quizprintkey','fri')">🖨️ Print answer key (teacher)</button>
+      <button class="btn ghost small" onclick="nav('lessonplan','${day.key}')">${PRINT_ICON_HTML} Print NZC lesson plan</button>
+      <button class="btn ghost small" onclick="nav('quizprint','fri')">${PRINT_ICON_HTML} Print student copy</button>
+      <button class="btn ghost small" onclick="nav('quizprintkey','fri')">${PRINT_ICON_HTML} Print answer key (teacher)</button>
     </div>
     ${scoreBanner}
     <div id="quizList">${qs}</div>
@@ -798,7 +808,7 @@ function renderLessonPlanView(key){
   ${topnav(`Home / <button onclick="nav('weekhub')">Week ${curWeek}</button> / ${day.label} Lesson Plan`)}
   <div class="wrap section">
     <div class="section-head"><div class="kicker">PRINTABLE</div><h2>${day.label} — NZC Lesson Plan</h2></div>
-    <button class="btn ghost small print-only-btn" onclick="window.print()">🖨️ Print this lesson plan</button>
+    <button class="btn ghost small print-only-btn" onclick="window.print()">${PRINT_ICON_HTML} Print this lesson plan</button>
     ${lessonPlanHTML(day)}
     <div class="back-row no-print"><button class="btn ghost" onclick="nav('day','${day.key}')">← Back to ${day.label}</button></div>
   </div>
@@ -829,7 +839,7 @@ function renderWeekPack(){
       <label><input type="checkbox" ${opts.worksheets?'checked':''} onchange="weekPackOpts.worksheets=this.checked;render()"> Group-read worksheets</label>
       <label><input type="checkbox" ${opts.quizStudent?'checked':''} onchange="weekPackOpts.quizStudent=this.checked;render()"> Friday quiz (student copy)</label>
       <label><input type="checkbox" ${opts.quizAnswerKey?'checked':''} onchange="weekPackOpts.quizAnswerKey=this.checked;render()"> Quiz answer key (teacher only)</label>
-      <button class="btn small" onclick="window.print()">🖨️ Print week pack</button>
+      <button class="btn small" onclick="window.print()">${PRINT_ICON_HTML} Print week pack</button>
     </div>
     <div class="wp-cover">
       <h3>Boy: Tales of Childhood — Week ${curWeek} Pack</h3>
@@ -863,7 +873,7 @@ function renderRubricPage(){
     <div class="rubric-add no-print">
       <input id="newStudent" placeholder="Add a student name" onkeydown="if(event.key==='Enter')addStudent()">
       <button class="btn small" onclick="addStudent()">Add student</button>
-      <button class="btn ghost small" onclick="window.print()">🖨️ Print blank rubric</button>
+      <button class="btn ghost small" onclick="window.print()">${PRINT_ICON_HTML} Print blank rubric</button>
     </div>
     <div class="rubric-scroll">
       <table class="rubric-table">
@@ -907,7 +917,7 @@ function renderWeek10Hub(){
     <div class="section-head" style="margin-top:34px;"><div class="kicker">RUBRIC</div><h2>How this will be marked</h2></div>
     <ul style="color:var(--ink-soft);max-width:640px;">${w.rubric.map(r=>`<li>${r}</li>`).join('')}</ul>
 
-    <div class="lp-actions"><button class="btn small ghost" onclick="nav('certificate')">🖨️ Print completion certificate</button></div>
+    <div class="lp-actions"><button class="btn small ghost" onclick="nav('certificate')">${PRINT_ICON_HTML} Print completion certificate</button></div>
     <div class="back-row"><button class="btn ghost" onclick="nav('landing')">← Back to Home</button></div>
   </div>
   <footer>Week 10 of 10 · Boy: Tales of Childhood book study</footer>
@@ -983,14 +993,18 @@ function renderWeek10L3(l){
         </ul>
       </div>
     </div>
-    <div class="lp-actions"><button class="btn small" onclick="nav('certificate')">🖨️ Print completion certificates</button></div>
+    <div class="lp-actions"><button class="btn small" onclick="nav('certificate')">${PRINT_ICON_HTML} Print completion certificates</button></div>
     <div class="back-row"><button class="btn ghost" onclick="nav('weekhub')">← Back to Week 10</button></div>
   </div>`;
 }
 
 /* ---- Whole-programme completion certificate ---- */
 function certificateHTML(){
-  return `<div class="certificate">
+  /* Certificate border art (unit plan Section 8D, prompt 24) — a decorative frame with a blank centre for text. */
+  const borderStyle = (typeof IMG_CERT_BORDER!=='undefined')
+    ? ` style="background-image:url('${IMG_CERT_BORDER}'); background-size:100% 100%; background-repeat:no-repeat;"`
+    : '';
+  return `<div class="certificate"${borderStyle}>
     <div class="cert-kicker">Boy: Tales of Childhood — Book Study</div>
     <h2 class="cert-title">Certificate of Completion</h2>
     <p class="cert-line">This certifies that</p>
@@ -1005,7 +1019,7 @@ function renderCertificatePrint(){
   <div class="wrap section no-print">
     <div class="section-head"><div class="kicker">PRINTABLE</div><h2>Completion Certificate</h2></div>
     <p style="color:var(--ink-soft);max-width:640px;">One blank certificate — print a copy per student, or use "multiple pages per sheet" in your print dialog to print several at once.</p>
-    <div class="lp-actions"><button class="btn" onclick="window.print()">🖨️ Print certificate</button><button class="btn ghost" onclick="nav('landing')">← Back to Home</button></div>
+    <div class="lp-actions"><button class="btn" onclick="window.print()">${PRINT_ICON_HTML} Print certificate</button><button class="btn ghost" onclick="nav('landing')">← Back to Home</button></div>
   </div>
   ${certificateHTML()}`;
 }
@@ -1056,7 +1070,7 @@ function renderReadingPlan(){
   <div class="wrap section no-print">
     <div class="section-head"><div class="kicker">PRINTABLE</div><h2>Term Reading Schedule</h2></div>
     <p style="color:var(--ink-soft);max-width:640px;">What is read on each day for the whole term, with the start and stop points for split chapters. Page numbers are left blank so they can be filled in from your class copies.</p>
-    <div class="lp-actions"><button class="btn" onclick="window.print()">🖨️ Print reading schedule</button><button class="btn ghost" onclick="nav('landing')">← Back to Home</button></div>
+    <div class="lp-actions"><button class="btn" onclick="window.print()">${PRINT_ICON_HTML} Print reading schedule</button><button class="btn ghost" onclick="nav('landing')">← Back to Home</button></div>
   </div>
   <div class="wb-doc">${wbSchedule()}</div>`;
 }
@@ -1144,7 +1158,7 @@ function renderWorkbook(){
     <div class="section-head"><div class="kicker">PRINT ONCE, USE ALL TERM</div><h2>Student Workbook</h2></div>
     <p style="color:var(--ink-soft);max-width:640px;">One booklet with every page students write on — cover, the term reading schedule, week overview and project menu, reading-day pages and the Friday quiz. It grows automatically as more weeks are added to the app, so print it at the start of the topic.</p>
     <p style="font-size:.9rem;"><strong>Included so far:</strong> ${weeks.map(w=>'Week '+w.n).join(', ')} <span style="color:var(--ink-soft);">(${weeks.length+1<10 ? 'Weeks '+(weeks.length+1)+'–10' : 'Week 10'} will appear here once built)</span></p>
-    <div class="lp-actions"><button class="btn" onclick="window.print()">🖨️ Print workbook</button><button class="btn ghost" onclick="nav('landing')">← Back to Home</button></div>
+    <div class="lp-actions"><button class="btn" onclick="window.print()">${PRINT_ICON_HTML} Print workbook</button><button class="btn ghost" onclick="nav('landing')">← Back to Home</button></div>
     <p class="save-note">Print tips: choose A4, double-sided (flip on long edge), and turn off "Headers and footers" in the print dialog. Choose "Save as PDF" to make a file for your school's print room. Teacher pages (lesson plans, answer keys, rubric) are not included. Below is a preview.</p>
   </div>
   <div class="wb-doc">${wbBook()}</div>
