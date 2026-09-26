@@ -12,7 +12,9 @@ This is the **content blueprint** for the app/website you're building. It contai
 - The exact **app behaviour spec** (what happens on each day type)
 - A full library of **AI image-generation prompts** (for ChatGPT/DALL·E) so the site looks amazing for 9–12 year-olds
 - A spec for the **"Print All" booklet button**
-- A spec for the **student workbook** (one booklet of every page students write on, printed once at the start of the topic) and the **term reading schedule** printable — both now built (Section 7)
+- A spec for the **student workbook** and matching **teacher book** (companion printable booklets, printed once at the start of the topic) and the **term reading schedule** printable — all now built (Section 7)
+
+📌 **Template note:** Section 7's pattern — one whole-programme rubric only (never a rubric per lesson or per project), reproduced as a kid-language tick-box page in the student booklet and a full descriptor guide in the teacher booklet; a Student Workbook and a matching Teacher Book, both auto-generated from the same `WEEKS` registry; a term reading schedule shared by both booklets — is the intended shape for **every future book study built from this document**, not just this one. When starting a new book study, copy this document's structure (Sections 1–9) and swap the book-specific content (chapters, questions, quizzes, projects, image prompts); keep the rubric/workbook/teacher-book architecture as-is.
 
 Chapter names below are taken directly from the book's contents page, so you (or the app) can match them to whatever edition/page numbers your class set uses. *Boy*'s chapters are longer and more self-contained than a typical junior novel's (roughly 3–14 pages each), so most reading days cover one whole chapter; the five longest chapters (*The bicycle and the sweet-shop*, *Mr Coombes*, *Mrs Pratchett's revenge*, *The magic island*, *The Matron*, *A drive in the motor-car*, *Captain Hardcastle*, *Goodbye school*) are split across two or more days at a sensible pause point, marked "Part 1 / Part 2" etc. below. The teacher should find the nearest natural paragraph break to the suggested split when reading from their own edition.
 
@@ -606,7 +608,7 @@ Each week also has **one rotating menu of 4 projects** (poster / comic strip / d
 3. **Mini "Boy" museum exhibit:** Design a small museum display (physical or digital) of 5–6 "artefacts" from the book (a tuck-box, a gobstopper jar, a cane — described respectfully as a historical object, a paddle-steamer ticket, a Cadbury testing box) each with an information card explaining its significance.
 4. **Dramatic scene compilation:** In a group, choose and rehearse 3 short scenes from across the book (comedy encouraged, no violence performed) to perform for the class or at the celebration, with a short spoken introduction explaining why you chose each scene.
 
-**Rubric (printable):** Understanding of the text (evidence and detail) / Creativity and effort / Clarity of presentation / Use of NZC-aligned language features (e.g. hyperbole, characterisation, memoir voice).
+**Rubric:** There is no separate Week 10 or per-project rubric. The final project is assessed against the same whole-programme Reading Achievement Rubric used all term (Section 7) — mainly *Reading — Ideas* (evidence and detail), *Writing — Ideas* (creativity), *Writing — Processes & Strategies* (clarity/independence) and *Writing — Structure & Language* (NZC language features such as hyperbole, characterisation, memoir voice).
 
 **Certificate:** Printable "Boy Book Study — Completed!" certificate template for every student.
 
@@ -657,8 +659,8 @@ Each week also has **one rotating menu of 4 projects** (poster / comic strip / d
 - One "🖨️ Print week pack" button triggers `window.print()`; "Save as PDF" in the print dialog gives the teacher a single PDF containing the whole week's prep in one document, rather than printing each day separately.
 - **Future work:** extend the same pattern to a full-term "Print All" button once Weeks 2–10 are built, adding a generated table of contents and the Week 10 final project brief + rubric + certificate, per the original spec below.
 
-**📊 Reading Achievement Rubric (whole-programme) — IMPLEMENTED:**
-- A **"📊 Rubric"** link is always visible in the top navigation bar, from any screen, since this rubric spans the entire ten-week programme rather than living inside one week.
+**📊 Reading Achievement Rubric (whole-programme, tri-state) — IMPLEMENTED:**
+- **There is exactly one rubric in the whole app.** It is not duplicated per lesson, per week, or per Week 10 project — every day's lesson plan, every worksheet, and the Week 10 final project all point back to the same 8 criteria below rather than defining their own. A **"📊 Rubric"** link is always visible in the top navigation bar, from any screen, since this rubric spans the entire ten-week programme.
 - The rubric is a fixed set of 8 whole-programme criteria derived from Section 2's NZC achievement objectives, split into Reading and Writing strands plus two Key Competencies:
   1. **Reading — Ideas:** Explains ideas within, across and beyond the text (e.g. why Dahl chooses to remember certain moments).
   2. **Reading — Structure & Language:** Identifies how the memoir is shaped for its purpose, incl. hyperbole and comic exaggeration.
@@ -668,16 +670,18 @@ Each week also has **one rotating menu of 4 projects** (poster / comic strip / d
   6. **Writing — Processes & Strategies:** Plans, drafts and shares writing or project work with growing independence.
   7. **Key Competency — Thinking:** Asks questions and forms a reasoned opinion about fairness or authority in the text.
   8. **Key Competency — Participating & Contributing:** Contributes constructively during group reading discussions.
-- The teacher adds student names via a text box; each student becomes a column in a grid, with the 8 criteria as rows.
-- Clicking a cell **highlights it and records the date** the student demonstrated that skill — a simple click-to-toggle "achieved" mark, exactly as requested, rather than a numeric score. Data is saved to the browser's local storage on that device only (no server/back end), so it persists between visits on the same computer.
-- A **"🖨️ Print blank rubric"** button prints a paper version of the same grid for teachers who prefer to tick achievement by hand.
-- **Rubric checkpoints inside lesson plans:** every day's printable NZC lesson plan (see above) carries a highlighted **"📊 Rubric checkpoint"** box naming which 1–2 rubric criteria to watch for that day, with a plain-language description of what to look/listen for, plus small tags showing the criterion code(s). For Week 1 these are:
+- Each criterion carries three fields used across the app and both booklets: a `short` kid-language "I can..." statement (student-facing), and `notYet` / `achieved` / `excelled` descriptors (teacher-facing) — examples of what each level could look like, so criteria = curriculum expectations, described once and reused everywhere.
+- **Tri-state marking, not binary:** the teacher adds student names via a text box; each student becomes a column in a grid, with the 8 criteria as rows. Clicking a cell **cycles it** — blank (Not Achieved) → ✓ Achieved → ★ Excelled → blank — and records the date of the most recent change. Data is saved to the browser's local storage on that device only (no server/back end), so it persists between visits on the same computer.
+- A **"🖨️ Print blank rubric"** button prints a paper version of the same grid (three tick columns per student) for teachers who prefer to tick by hand.
+- **Rubric Marking Guide (teacher support) — IMPLEMENTED:** a **"📋 Print marking guide"** button on the rubric screen opens a standalone printable page listing, for every criterion, what Not Achieved / Achieved / Excelled could look like in a student's work — e.g. for *Reading — Ideas*, Not Achieved is "retells what happened but doesn't yet explain why it mattered," Achieved is "explains, with a reason from the text, why a memory was important," and Excelled is "connects ideas across chapters, or beyond the text, with insight." These are examples to support consistent judgement, not an exhaustive checklist. The same table is reproduced in the Teacher Book (see below).
+- **Rubric checkpoints inside lesson plans:** every day's printable NZC lesson plan (see above) carries a highlighted **"📊 Rubric checkpoint"** box naming which 1–2 rubric criteria to watch for that day, with a plain-language description of what to look/listen for, plus small tags showing the criterion code(s). This is what makes the single rubric "tick-off-able as prompted through the book" — the lesson plan tells the teacher when, the marking guide tells them what counts. For Week 1 these are:
   - **Monday** (Papa and Mama): R1 (Reading — Ideas), R7 (Thinking) — watch for students explaining why the arm-accident and "glorious walks" details were chosen, meaningful memories, and who question whether the father's parenting idea was fair or strange.
   - **Tuesday** (Kindergarten): R3 (Processes & Strategies), R8 (Participating & Contributing) — watch for students inferring why the mother's response shows courage, and contributing constructively in the group.
   - **Wednesday** (Bicycle & sweet-shop pt 1): R1, R4 (Writing — Ideas) — watch for students explaining why the bicycle memory has stuck for sixty years, and writing a clear go-away reflection.
   - **Thursday** (Bicycle & sweet-shop pt 2): R2 (Reading — Structure & Language), R5 (Writing — Structure & Language) — watch for students identifying Dahl's hyperbole about Mrs Pratchett, and using similarly vivid exaggeration in their own invented sweet-story.
   - **Friday** (Quiz): R6 (Writing/Processes — independent recall) — use quiz results as the checkpoint, and record which students need more support before Week 2.
-- **Future work:** as Weeks 2–10 are built, each new week's days should get their own `rubricIds` + `rubricNote` following this same pattern, so the rubric's "Checkpoints" column (e.g. "Wk1 Mon/Wed · Wk3 · Wk9") is populated with real, working links once those weeks exist. The rubric itself does not need to change — it already covers the whole programme.
+- **Also lives in both booklets:** the Student Workbook includes the same 8 criteria in kid-friendly `short` language with three blank tick boxes each (self/teacher tick, no descriptors); the Teacher Book includes the full descriptor table from the Marking Guide. Neither booklet re-derives the rubric — both are generated from the one `RUBRIC` array.
+- **Future work:** as Weeks 2–10 are built, each new week's days should get their own `rubricIds` + `rubricNote` following this same pattern, so the rubric's "Checkpoints" column (e.g. "Wk1 Mon/Wed · Wk3 · Wk9") is populated with real, working links once those weeks exist. The rubric itself does not need to change — it already covers the whole programme, including Week 10's final project (referenced there by criterion id, not redefined).
 
 **📅 Term Reading Schedule (printable) — IMPLEMENTED (whole term, Weeks 1–9 + Week 10 note):**
 - A **"🖨️ Print term reading schedule"** button sits on the landing page, under the "Ten weeks, one memoir" shelf. It opens a standalone printable page (`nav('readingplan')`, rendered by `renderReadingPlan()`).
@@ -692,20 +696,38 @@ Each week also has **one rotating menu of 4 projects** (poster / comic strip / d
 - **Purpose:** the teacher prints one booklet at the start of the topic so nothing needs printing again. It replaces the loose "reading journal" that the go-away prompt refers to — students write everything in the workbook and keep it for the term.
 - **Contents, in order:**
   1. **Cover** — full-bleed A4 cover using the supplied artwork (see Section 8, G). Text overlaid: "BOY / Tales of Childhood / Student Workbook" in the parchment scroll, and a "NAME" label above the writing line on the luggage-tag label.
-  2. **Welcome page** — how the workbook works (3 parts of each reading day, Friday quiz, project menu), a contents list generated from the weeks included (plus the reading schedule), and name/class lines.
-  3. **Term reading schedule** — the two pages described above.
-  4. **For each built week:**
+  2. **Welcome page** — how the workbook works (3 parts of each reading day, Friday quiz, project menu), a contents list generated from the weeks included (plus the rubric and reading schedule), and name/class lines.
+  3. **My Reading Achievement Rubric** — the same 8 whole-programme criteria as Section 7's rubric, in kid-friendly `short` language, one row each, with three blank tick columns (Not yet / Achieved / Excelled). No descriptors here (those are teacher-only, in the Teacher Book) — students/teachers just tick as prompted by the lesson plans through the term. This is the *only* rubric content students see; there is no separate project rubric anywhere in the workbook.
+  4. **Term reading schedule** — the two pages described above.
+  5. **For each built week:**
      - **Week overview page** — the week's Learning Intention and Success Criteria. Each success criterion has a self-check row (☐ Not yet ☐ Getting there ☐ Got it!) — an addition not in the original plan. Also the **spare-time project menu** (4 options with tick boxes) and 5 lines for a "My project plan".
      - **One page per reading day, Mon–Thu**, identical for teacher-read and group-read days: chapter heading, **Lead-in** (3 writing lines per question), **Comprehension & inference** (3 lines per question), **Go-away reflection** (6 lines).
      - **Friday quiz** — student copy with name/date line; multiple choice shown as ○ a) – d), short answers with 2 lines. Flows over about 3 pages; questions never split across pages.
-- **Left out on purpose (teacher-only):** lesson plans, answer keys, rubric, NZC alignment block and the teacher content note.
-- **Size:** about 8 pages per week (1 overview + 4 days + ~3 quiz) plus 4 fixed pages (cover, welcome, 2 schedule pages). Weeks 1–3 together = 28 pages, which suits double-sided printing.
-- **How it grows:** `wbWeeks()` builds the list from the `WEEKS` registry, so when a week is registered there its pages the welcome-page contents and the "covers N of 10 weeks" footer all update automatically. For this to work, each new week's data must follow the `WEEK1` shape: `li`, `sc`, `days[]` (each with `key`, `label`, `mode`, `chapter`, and for reading days `leadIn[]`, `comp[]`, `goAway`), and `projects[]` (`icon`, `title`, `text`); and the quiz must follow the `QUIZ1` shape (`q`, `type` = `mc`/`short`, `opts`, `a`, `model`). **Write `sc` as criteria separated by semicolons** — the workbook splits on them to make one self-check row per criterion.
-- **Print technical notes:** A4 size; the page rules (`@page`) are injected only while the workbook or reading-schedule screen is showing, so every other print job in the app is unchanged. The first page has zero margin so the cover bleeds to the edge; other pages have 14 mm margins and a page number in the bottom margin (Chrome/Edge; other browsers may omit page numbers). Each section starts a new page (`break-before: page`). The cover is a real `<img>` rather than a CSS background, so it prints even when "Background graphics" is off. Recommended settings: A4, double-sided (flip on long edge), headers and footers off. "Save as PDF" makes a file for a print room.
-- **Future work — workbook pages to add as the app grows:** Weeks 2–9 (via `wbWeeks()`); **Week 10** final project brief (4 options), student project tracker/checklist and presentation-day schedule; the **"Boy Book Study — Completed!" certificate** as the last page.
+  6. **Week 10** (once built) — final project brief with the 4 options and a pointer to the relevant rubric criteria (by code, not a re-listed rubric), a work-time progress checklist, a presentation-planning page, and the **completion certificate** as the last page (with the "Brave Reader" badge, Section 8D).
+- **Left out on purpose (teacher-only, now in the Teacher Book instead):** full lesson plans, quiz answer keys, the rubric marking guide (level descriptors), the NZC alignment block, and the teacher content note.
+- **Size:** about 8 pages per week (1 overview + 4 days + ~3 quiz) plus 5 fixed pages (cover, welcome, rubric, 2 schedule pages). Weeks 1–3 together = 29 pages, which suits double-sided printing.
+- **How it grows:** `wbWeeks()` builds the list from the `WEEKS` registry, so when a week is registered there its pages, the welcome-page contents and the "covers N of 10 weeks" footer all update automatically. For this to work, each new week's data must follow the `WEEK1` shape: `li`, `sc`, `days[]` (each with `key`, `label`, `mode`, `chapter`, and for reading days `leadIn[]`, `comp[]`, `goAway`), and `projects[]` (`icon`, `title`, `text`); and the quiz must follow the `QUIZ1` shape (`q`, `type` = `mc`/`short`, `opts`, `a`, `model`). **Write `sc` as criteria separated by semicolons** — the workbook splits on them to make one self-check row per criterion. The rubric page needs no per-week data at all — it is generated once from the shared `RUBRIC` array (Section 7).
+- **Print technical notes:** A4 size; the page rules (`@page`) are injected only while the workbook, teacher book, or reading-schedule screen is showing, so every other print job in the app is unchanged. The first page has zero margin so the cover bleeds to the edge; other pages have 14 mm margins and a page number in the bottom margin (Chrome/Edge; other browsers may omit page numbers). Each section starts a new page (`break-before: page`). The cover is a real `<img>` rather than a CSS background, so it prints even when "Background graphics" is off. Recommended settings: A4, double-sided (flip on long edge), headers and footers off. "Save as PDF" makes a file for a print room.
+- **Future work — workbook pages to add as the app grows:** Weeks 4–9 (via `wbWeeks()`, automatic).
+
+**📗 Teacher Book (printable booklet) — IMPLEMENTED, mirrors the Student Workbook:**
+- A **"📗 Build teacher book"** button sits beside "📘 Build student workbook" on the landing page hero (`nav('teacherbook')`, rendered by `renderTeacherBook()`). Same screen pattern as the Student Workbook: an explanation of what's included so far, a **"🖨️ Print teacher book"** button plus print tips, and an on-screen preview of every page.
+- **Purpose:** everything a teacher needs to run the whole term without printing anything else separately — reading schedule, rubric marking support, and every week's full lesson plans and quiz answer keys, compiled once into a single booklet.
+- **Cover:** reuses the **same supplied artwork as the Student Workbook cover** (Section 8, G) — deliberately not a new image, so the two booklets are visually a matched pair — with the overlaid text changed to "BOY / Tales of Childhood / Teacher Book" and a "Teacher" label instead of a student name line.
+- **Contents, in order:**
+  1. **Cover** (as above).
+  2. **Welcome page** — what's inside and a reminder to keep this booklet separate from the Student Workbook, since it contains quiz answers and marking guidance.
+  3. **Term reading schedule** — identical two pages to the Student Workbook (built by the same shared `wbSchedule()` function).
+  4. **Rubric Marking Guide** — the full descriptor table from Section 7 (criterion × Not Achieved / Achieved / Excelled), so the teacher has the marking support to hand whenever they're using the interactive rubric or ticking the paper version.
+  5. **For each built week (1–9):** a short teacher overview (Learning Intention, Success Criteria, spare-time project menu titles), then every Mon–Fri day's full printable NZC lesson plan (as already implemented for the standalone "🖨️ Print NZC lesson plan" button and the Week Pack), with the Friday quiz's teacher answer key inserted straight after that day's lesson plan.
+  6. **Week 10** (once built) — a teacher overview page: Learning Intention, Success Criteria, the three lessons' purpose, the 4 final project options, and which rubric criteria the final project is marked against (by code, referencing Section 7 — no separate project rubric).
+- **Left out on purpose (student-only):** the workbook's writing lines, self-check boxes and quiz student copies — those stay in the Student Workbook.
+- **How it grows:** built from the same `WEEKS` registry as the Student Workbook (`wbWeeks()`), so it grows automatically as Weeks 4–10 are added — no separate teacher-book data to maintain. `curWeek` is saved and restored around the compile loop, since the shared `lessonPlanHTML()`/`buildQuizPrintable()` functions read the current week from that global.
+- **Print technical notes:** identical A4 booklet rules to the Student Workbook (see above) — both are driven by the same `@page` injection, keyed off `state.view` being `'workbook'` or `'teacherbook'`.
+- **Future work:** Weeks 4–9's lesson plans + answer keys (automatic via `wbWeeks()`); Week 10's teacher overview page (automatic once `WEEK10` is finalised).
 
 **Final Project & Celebration area:**
-- Project choice cards (Section 6), rubric, presentation-day scheduler, printable certificate template
+- Project choice cards (Section 6), the shared rubric (Section 7, referenced by criterion id), presentation-day scheduler, printable certificate template
 
 ---
 
@@ -781,27 +803,39 @@ For your "Print All" button (full term, once Weeks 2–10 exist), the booklet sh
 - [x] Teacher-only appendix: Friday's quiz answer key
 - [x] Checkboxes to include/exclude each of the above before printing
 
-**Whole-programme Reading Achievement Rubric** (accessible any time via the "📊 Rubric" link in the top nav — see Section 7):
-- [x] 8 NZC-aligned criteria covering Reading, Writing and 2 Key Competencies, spanning the whole ten-week study
-- [x] Add-a-student, click-to-mark-achieved grid, saved on-device
-- [x] Printable blank rubric for hand-ticking
+**Whole-programme Reading Achievement Rubric — ONE rubric only** (accessible any time via the "📊 Rubric" link in the top nav — see Section 7):
+- [x] 8 NZC-aligned criteria covering Reading, Writing and 2 Key Competencies, spanning the whole ten-week study — no separate rubric per lesson, per week, or for the Week 10 final project
+- [x] Add-a-student, click-to-cycle grid: blank (Not Achieved) → ✓ Achieved → ★ Excelled, saved on-device
+- [x] Printable blank rubric (three tick columns per student) for hand-ticking
+- [x] Printable Rubric Marking Guide (teacher-only): example descriptors of what Not Achieved / Achieved / Excelled could look like, for every criterion
 - [x] Daily lesson plans prompt the teacher on which criteria to check off and when (Week 1 fully wired; Weeks 2–10 to follow the same pattern as they're built)
+- [x] Reproduced in both booklets: kid-language tick-box version in the Student Workbook, full descriptor version in the Teacher Book
 
 **Student Workbook** (via the "📘 Build student workbook" button on the landing page — see Section 7):
 - [x] Full-bleed A4 cover with title and name label
 - [x] Welcome page with auto-generated contents list
+- [x] My Reading Achievement Rubric — the one whole-programme rubric, kid-language, tri-state tick boxes
 - [x] Term reading schedule (2 pages, whole term)
 - [x] Week 1: overview page (LI, success criteria with self-check, project menu, project plan lines)
 - [x] Week 1: Monday–Thursday student pages (lead-in, comprehension & inference, go-away reflection)
 - [x] Week 1: Friday quiz (student copy)
 - [x] Weeks 2–3: same set of pages per week (added automatically via the `WEEKS` registry)
 - [ ] Weeks 4–9: same set of pages per week, as each week is built
-- [ ] Week 10: final project brief, project tracker/checklist, presentation-day schedule
-- [ ] Completion certificate (last page)
+- [x] Week 10: final project brief, project tracker/checklist, presentation-day schedule (once `WEEK10` is registered)
+- [x] Completion certificate, incl. "Brave Reader" badge (last page)
+
+**Teacher Book** (via the "📗 Build teacher book" button on the landing page — see Section 7):
+- [x] Cover reusing the Student Workbook's supplied artwork, retitled "Teacher Book"
+- [x] Welcome page explaining contents, with a reminder to keep it separate from the Student Workbook
+- [x] Term reading schedule (same 2 pages as the Student Workbook)
+- [x] Rubric Marking Guide — full descriptor table for all 8 criteria
+- [x] Weeks 1–3: full NZC lesson plan for every day + Friday's quiz answer key straight after (added automatically via the `WEEKS` registry)
+- [ ] Weeks 4–9: same, as each week is built
+- [x] Week 10: teacher overview (LI, SC, 3 lessons, 4 project options, rubric criteria referenced by code)
 
 **Term reading schedule** (via the "🖨️ Print term reading schedule" button on the landing page — see Section 7):
 - [x] Two-page printable for Weeks 1–10: day, chapter, Part start/stop points, teacher vs group read, blank page-number boxes, Done tick box
-- [x] Also included in the student workbook
+- [x] Also included in both the Student Workbook and the Teacher Book
 - [ ] Optional: fill in page numbers for the class's specific edition
 
 ---
